@@ -16,18 +16,7 @@ private Double operator;
     private Double memory;
 private ArrayList<Button> numButtonList;
 private TextView output;
-private Button btn0;
-    private Button btn00;
-    private Button btn1;
-    private Button btn2;
-    private Button btn3;
-    private Button btn4;
-    private Button btn5;
-    private Button btn6;
-    private Button btn7;
-    private Button btn8;
-    private Button btn9;
-private Button btnAdd;
+    private Button btnAdd;
     private Button btnSubtract;
     private Button btnMultiply;
     private Button btnDivide;
@@ -46,6 +35,7 @@ private boolean addOperationOn;
     private boolean multiplyOperationOn;
     private boolean divideOperationOn;
 private boolean showMemory = false;
+private String lastOperation = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +58,17 @@ private boolean showMemory = false;
     private void createViewLinks() {
         output = findViewById(R.id.txt_output);
 
-        btn0 = findViewById(R.id.btn_zero);
-        btn00 = findViewById(R.id.btn_zerozero);
-        btn1 = findViewById(R.id.btn_1);
-        btn2 = findViewById(R.id.btn_2);
-        btn3 = findViewById(R.id.btn_3);
-        btn4 = findViewById(R.id.btn_4);
-        btn5 = findViewById(R.id.btn_5);
-        btn6 = findViewById(R.id.btn_6);
-        btn7 = findViewById(R.id.btn_7);
-        btn8 = findViewById(R.id.btn_8);
-        btn9 = findViewById(R.id.btn_9);
+        Button btn0 = findViewById(R.id.btn_zero);
+        Button btn00 = findViewById(R.id.btn_zerozero);
+        Button btn1 = findViewById(R.id.btn_1);
+        Button btn2 = findViewById(R.id.btn_2);
+        Button btn3 = findViewById(R.id.btn_3);
+        Button btn4 = findViewById(R.id.btn_4);
+        Button btn5 = findViewById(R.id.btn_5);
+        Button btn6 = findViewById(R.id.btn_6);
+        Button btn7 = findViewById(R.id.btn_7);
+        Button btn8 = findViewById(R.id.btn_8);
+        Button btn9 = findViewById(R.id.btn_9);
 
         numButtonList = new ArrayList<>();
         numButtonList.add(btn0);
@@ -217,7 +207,7 @@ private boolean showMemory = false;
             @Override
             public void onClick(View v) {
                 if (!output.getText().toString().equals("")) {
-                    Double invert = Double.parseDouble(output.getText().toString()) * -1;
+                    double invert = Double.parseDouble(output.getText().toString()) * -1;
                     output.setText(removeZeroes(invert));
                 } else if (output.getText().toString().equals("") && !output.getHint().toString().equals("")) {
                     double invert = Double.parseDouble(output.getHint().toString()) * -1;
@@ -549,23 +539,26 @@ private boolean showMemory = false;
 
     private void equalsFunction() {
         if (!output.getText().toString().equals("") && (addOperationOn || subtractOperationOn || multiplyOperationOn || divideOperationOn)) {
-            operator = Double.valueOf(output.getText().toString());
             if (operand!=null) {
+                operator = Double.valueOf(output.getText().toString());
                 if (addOperationOn) {
                     operand = operand + operator;
                     output.setText("");
                     output.setHint(removeZeroes(operand));
                     addOperationOn = false;
+                    lastOperation = "addition";
                 } else if (subtractOperationOn) {
                     operand = operand - operator;
                     output.setText("");
                     output.setHint(removeZeroes(operand));
                     subtractOperationOn = false;
+                    lastOperation = "subtraction";
                 } else if (multiplyOperationOn) {
                     operand = operand * operator;
                     output.setText("");
                     output.setHint(removeZeroes(operand));
                     multiplyOperationOn = false;
+                    lastOperation = "multiplication";
                 } else if (divideOperationOn) {
                     if (operand != 0.0 || operator != 0.0) {
                         operand = operand / operator;
@@ -575,6 +568,36 @@ private boolean showMemory = false;
                     output.setText("");
                     output.setHint(removeZeroes(operand));
                     divideOperationOn = false;
+                    lastOperation = "division";
+                }
+            }
+        }  else {
+            if (!lastOperation.equals("") && operator!=null) {
+                switch (lastOperation) {
+                    case "addition":
+                        operand = operand + operator;
+                        output.setText("");
+                        output.setHint(removeZeroes(operand));
+                        break;
+                    case "subtraction":
+                        operand = operand - operator;
+                        output.setText("");
+                        output.setHint(removeZeroes(operand));
+                        break;
+                    case "multiplication":
+                        operand = operand * operator;
+                        output.setText("");
+                        output.setHint(removeZeroes(operand));
+                        break;
+                    case "division":
+                        if (operand != 0.0 || operator != 0.0) {
+                            operand = operand / operator;
+                        } else {
+                            operand = 0.0;
+                        }
+                        output.setText("");
+                        output.setHint(removeZeroes(operand));
+                        break;
                 }
             }
         }
