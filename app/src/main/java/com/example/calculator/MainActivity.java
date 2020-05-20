@@ -1,28 +1,51 @@
 package com.example.calculator;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import java.lang.String;
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-Double operator, operand, memory;
-ArrayList<Button> numButtonList;
-TextView output;
-Button btn0, btn00, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9;
-Button btnAdd, btnSubtract, btnMultiply, btnDivide, btnEquals, btnDecimal;
-Button btnRecallClearMemory, btnMemoryAdd, btnMemorySubtract, btnInverter;
-Button btnClearAll, btnClearLine, btnBackSpace, btnSquareRoot;
-boolean addOperationOn, subtractOperationOn, multiplyOperationOn, divideOperationOn;
-boolean showMemory = false;
+private Double operator;
+    private Double operand;
+    private Double memory;
+private ArrayList<Button> numButtonList;
+private TextView output;
+private Button btn0;
+    private Button btn00;
+    private Button btn1;
+    private Button btn2;
+    private Button btn3;
+    private Button btn4;
+    private Button btn5;
+    private Button btn6;
+    private Button btn7;
+    private Button btn8;
+    private Button btn9;
+private Button btnAdd;
+    private Button btnSubtract;
+    private Button btnMultiply;
+    private Button btnDivide;
+    private Button btnEquals;
+    private Button btnDecimal;
+private Button btnRecallClearMemory;
+    private Button btnMemoryAdd;
+    private Button btnMemorySubtract;
+    private Button btnInverter;
+private Button btnClearAll;
+    private Button btnClearLine;
+    private Button btnBackSpace;
+    private Button btnSquareRoot;
+private boolean addOperationOn;
+    private boolean subtractOperationOn;
+    private boolean multiplyOperationOn;
+    private boolean divideOperationOn;
+private boolean showMemory = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +128,7 @@ boolean showMemory = false;
         });
     }
 
-    public void clear() {
+    private void clear() {
         output.setText("");
         output.setHint("");
         operand = null;
@@ -146,8 +169,6 @@ boolean showMemory = false;
                         if (String.valueOf(numArray[i]).equals(".")) {
                             decimalPointFound = true;
                             break;
-                        } else {
-                            decimalPointFound = false;
                         }
                     }
                     if (!decimalPointFound) {
@@ -182,7 +203,7 @@ boolean showMemory = false;
             @Override
             public void onClick(View v) {
                 if (!String.valueOf(output.getText()).equals("")) {
-                    Double squareRoot = Double.parseDouble(String.valueOf(output.getText()));
+                    double squareRoot = Double.parseDouble(String.valueOf(output.getText()));
                     output.setText(removeZeroes(Math.sqrt(squareRoot)));
                 } else {
                     Double squareRoot = operand;
@@ -199,7 +220,7 @@ boolean showMemory = false;
                     Double invert = Double.parseDouble(output.getText().toString()) * -1;
                     output.setText(removeZeroes(invert));
                 } else if (output.getText().toString().equals("") && !output.getHint().toString().equals("")) {
-                    Double invert = Double.parseDouble(output.getHint().toString()) * -1;
+                    double invert = Double.parseDouble(output.getHint().toString()) * -1;
                     output.setText(removeZeroes(invert));
                 }
             }
@@ -222,7 +243,7 @@ boolean showMemory = false;
                             operand = Double.parseDouble(output.getText().toString());
                             output.setText("");
                             output.setHint(removeZeroes(operand));
-                        } else if (divideOperationOn) {
+                        } else {
                             operator = Double.parseDouble(output.getText().toString());
                             if (operand==0 || operator==0) {
                                 output.setText(String.valueOf(0));
@@ -279,7 +300,7 @@ boolean showMemory = false;
                             operand = Double.parseDouble(output.getText().toString());
                             output.setText("");
                             output.setHint(removeZeroes(operand));
-                        } else if (divideOperationOn) {
+                        } else {
                             operator = Double.parseDouble(output.getText().toString());
                             if (operand==0 || operator==0) {
                                 output.setText(String.valueOf(0));
@@ -337,7 +358,7 @@ boolean showMemory = false;
                             operand = Double.parseDouble(output.getText().toString());
                             output.setText("");
                             output.setHint(removeZeroes(operand));
-                        } else if (divideOperationOn) {
+                        } else {
                             operator = Double.parseDouble(output.getText().toString());
                             if (operand==0 || operator==0) {
                                 output.setText(String.valueOf(0));
@@ -394,7 +415,7 @@ boolean showMemory = false;
                             operand = Double.parseDouble(output.getText().toString());
                             output.setText("");
                             output.setHint(removeZeroes(operand));
-                        } else if (multiplyOperationOn) {
+                        } else {
                             operator = Double.parseDouble(output.getText().toString());
                             output.setText(String.valueOf(operand*operator));
                             operand = Double.parseDouble(output.getText().toString());
@@ -508,13 +529,13 @@ boolean showMemory = false;
         int counter = 0;
         StringBuilder numLimit = new StringBuilder();
         char[] numArray = output.getText().toString().toCharArray();
-        for (int i=0; i < numArray.length;i++) {
+        for (char c : numArray) {
             if (counter == 12) {
                 break;
-            } else if (counter < 12 && String.valueOf(numArray[i]).equals("-") || String.valueOf(numArray[i]).equals(".")) {
-                numLimit.append(numArray[i]);
+            } else if (counter < 12 && String.valueOf(c).equals("-") || String.valueOf(c).equals(".")) {
+                numLimit.append(c);
             } else if (counter < 12) {
-                numLimit.append(numArray[i]);
+                numLimit.append(c);
                 counter++;
             }
         }
@@ -523,8 +544,7 @@ boolean showMemory = false;
 
     private String removeZeroes(double x) {
         DecimalFormat format = new DecimalFormat("0.############");
-        String formattedNumber = format.format(x);
-        return formattedNumber;
+        return format.format(x);
     }
 
     private void equalsFunction() {
@@ -541,11 +561,6 @@ boolean showMemory = false;
                     output.setText("");
                     output.setHint(removeZeroes(operand));
                     subtractOperationOn = false;
-                } else if (multiplyOperationOn) {
-                    operand = operand * operator;
-                    output.setText("");
-                    output.setHint(removeZeroes(operand));
-                    multiplyOperationOn = false;
                 } else if (multiplyOperationOn) {
                     operand = operand * operator;
                     output.setText("");
