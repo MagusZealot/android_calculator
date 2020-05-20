@@ -134,7 +134,9 @@ private String lastOperation = "";
             @Override
             public void onClick(View v) {
                 String buttonName = ((Button) v).getText().toString();
-                if (output.getText().toString().equals("") || output.getText().toString().equals("0") || output.getText().toString().equals("NaN")) {
+                if (buttonName.equals("00") && (output.getText().toString().equals("") || output.getText().toString().equals("0") || output.getText().toString().equals("NaN"))) {
+                    output.setText("0");
+                } else if (output.getText().toString().equals("") || output.getText().toString().equals("0") || output.getText().toString().equals("NaN")) {
                     output.setText(buttonName);
                 } else {
                     output.setText(output.getText() + buttonName);
